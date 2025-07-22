@@ -23,19 +23,53 @@ jobs:
 
       - name: npm install, build, and test
         run: |
+          echo "Installing dependencies..."
           npm install
-          npm run build --if-present
-          npm run test --if-present
+          echo "Building React frontend..."
+          npm run build:frontend
+          echo "Verifying dist folder was created..."
+          ls -la dist/
+          if [ ! -f "dist/index.html" ]; then
+            echo "ERROR: dist/index.html was not created!"
+            exit 1
+          fi
+          echo "✅ Frontend build successful"
+          echo "Installing API dependencies..."
+          cd api && npm install && cd ..
+          echo "✅ Build process completed successfully"
 
       - name: Create deployment package
         run: |
-          # Include all necessary files for deployment
+          echo "Creating deployment package..."
           mkdir -p deployment-package
-          cp -r dist/ deployment-package/ || echo "No dist folder found, continuing..."
-          cp -r api/ deployment-package/
+          
+          # Copy built React frontend
+          if [ -d "dist" ]; then
+            echo "✅ Copying dist/ folder..."
+            cp -r dist/ deployment-package/
+          else
+            echo "❌ ERROR: dist/ folder not found!"
+            exit 1
+          fi
+          
+          # Copy API files
+          if [ -d "api" ]; then
+            echo "✅ Copying api/ folder..."
+            cp -r api/ deployment-package/
+          else
+            echo "❌ ERROR: api/ folder not found!"
+            exit 1
+          fi
+          
+          # Copy configuration files
+          echo "✅ Copying configuration files..."
           cp package.json deployment-package/
-          cp web.config deployment-package/ || echo "No web.config found"
-          cp server.js deployment-package/ || echo "No server.js found"
+          cp web.config deployment-package/
+          cp server.js deployment-package/
+          
+          echo "✅ Deployment package created successfully"
+          echo "Package contents:"
+          ls -la deployment-package/
           
       - name: Zip artifact for deployment
         run: |
@@ -71,4 +105,4 @@ jobs:
           app-name: 'OneView-VFSLATAM'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_ONEVIEW }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_SECRETNAME }}
