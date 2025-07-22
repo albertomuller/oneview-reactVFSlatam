@@ -158,7 +158,25 @@ Index Path: ${indexPath}
   }
 });
 
-app.listen(port, () => {
-  console.log(`🚀 OneView running at http://localhost:${port}`);
-  console.log(`📊 Health check: http://localhost:${port}/api/health`);
+const server = app.listen(port, '0.0.0.0', () => {
+  console.log(`🚀 OneView running at http://0.0.0.0:${port}`);
+  console.log(`📊 Health check: http://0.0.0.0:${port}/api/health`);
+  console.log(`📱 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🔧 Using mock data: ${USE_MOCK_DATA}`);
+});
+
+server.on('error', (err) => {
+  console.error('❌ Server error:', err);
+  if (err.code === 'EADDRINUSE') {
+    console.error(`❌ Port ${port} is already in use`);
+  }
+});
+
+process.on('uncaughtException', (err) => {
+  console.error('❌ Uncaught Exception:', err);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
 });

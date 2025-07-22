@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "npm run build:production && node server.js",
     "build": "npm install && npm run build:frontend && cd api && npm install",
     "build:frontend": "vite build",
+    "build:production": "vite build && cd api && npm install",
     "postinstall": "cd api && npm install"
   },
   "engines": {
