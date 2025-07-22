@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const { getConnection, sql } = require('./utils/database');
 const app = express();
 const port = process.env.PORT || 7071;
@@ -20,6 +21,7 @@ console.log('  Token configured:', !!AZURE_DEVOPS_TOKEN);
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '../dist')));
 
 // Mock data for development
 const mockInitiatives = [
@@ -408,12 +410,9 @@ app.use((err, req, res, next) => {
   });
 });
 
-// 404 handler
-app.use('*', (req, res) => {
-  res.status(404).json({ 
-    error: 'Endpoint not found',
-    path: req.originalUrl 
-  });
+// Serve React app for all other routes (fallback for client-side routing)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
 app.listen(port, () => {
