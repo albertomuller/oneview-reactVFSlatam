@@ -1,0 +1,28 @@
+{
+  "version": "1.0.3",
+  "azure": {
+    "runtime": {
+      "node_version": "20.19.1",
+      "npm_version": "10.9.2",
+      "startup_command": "npm install --omit=dev --no-audit --no-fund && npm start"
+    },
+    "environment_variables": {
+      "NODE_ENV": "production",
+      "USE_MOCK_DATA": "true",
+      "WEBSITE_NODE_DEFAULT_VERSION": "20.19.1",
+      "SCM_DO_BUILD_DURING_DEPLOYMENT": "false",
+      "WEBSITE_NPM_DEFAULT_VERSION": "10.9.2"
+    },
+    "health_checks": [
+      "/health",
+      "/api/health",
+      "/api/server-info"
+    ],
+    "deployment": {
+      "build_frontend": true,
+      "install_api_deps": true,
+      "include_dist": true,
+      "timeout_minutes": 10
+    }
+  }
+}
