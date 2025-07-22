@@ -6,6 +6,16 @@ const fs = require('fs');
 const app = express();
 const port = process.env.PORT || 8080;
 
+// Immediate health check for Azure
+app.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'healthy', 
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    version: process.env.npm_package_version || '1.0.2'
+  });
+});
+
 // Middleware
 app.use(cors());
 app.use(express.json());

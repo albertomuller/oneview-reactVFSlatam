@@ -7,7 +7,14 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: false,
-    minify: 'terser'
+    minify: 'terser',
+    target: 'es2015',
+    rollupOptions: {
+      output: {
+        manualChunks: undefined
+      }
+    },
+    chunkSizeWarningLimit: 1000
   },
   test: {
     environment: 'jsdom',
