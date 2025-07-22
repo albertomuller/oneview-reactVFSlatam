@@ -6,17 +6,29 @@ echo "Starting Azure deployment..."
 # Set npm cache directory
 export npm_config_cache=/tmp/.npm
 
-# Install production dependencies only with optimized settings
+# Install production dependencies with fallback
 echo "Installing dependencies..."
-npm ci --production --no-audit --no-fund --prefer-offline
+if npm ci --omit=dev --no-audit --no-fund --prefer-offline 2>/dev/null; then
+    echo "✅ npm ci succeeded"
+else
+    echo "⚠️ npm ci failed, falling back to npm install"
+    npm install --omit=dev --no-audit --no-fund --prefer-offline
+fi
 
 # Build the React frontend
 echo "Building React frontend..."
 npm run build:frontend
 
-# Install API dependencies
+# Install API dependencies with fallback
 echo "Installing API dependencies..."
-cd api && npm ci --production --no-audit --no-fund --prefer-offline && cd ..
+cd api
+if npm ci --omit=dev --no-audit --no-fund --prefer-offline 2>/dev/null; then
+    echo "✅ API npm ci succeeded"
+else
+    echo "⚠️ API npm ci failed, falling back to npm install"
+    npm install --omit=dev --no-audit --no-fund --prefer-offline
+fi
+cd ..
 
 # Start the server
 echo "Starting server..."
