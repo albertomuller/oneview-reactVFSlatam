@@ -2,105 +2,58 @@
 # Builds and deploys the React application with Volvo UX/UI to Azure Static Web Apps
 
 trigger:
-  branches:
-    include:
-    - main
-    - develop
+- main
+- develop
 
 pr:
-  branches:
-    include:
-    - main
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
 
 variables:
   nodeVersion: '20.x'
   buildConfiguration: 'production'
 
-stages:
-- stage: Build
-  displayName: 'Build Application'
-  jobs:
-  - job: BuildJob
-    displayName: 'Build OneView React'
-    pool:
-      vmImage: 'ubuntu-latest'
-    
-    steps:
-    - task: NodeTool@0
-      displayName: 'Setup Node.js $(nodeVersion)'
-      inputs:
-        versionSpec: '$(nodeVersion)'
-    
-    - script: |
-        echo "Node.js version: $(node --version)"
-        echo "NPM version: $(npm --version)"
-      displayName: 'Display Environment Info'
-    
-    - script: npm ci
-      displayName: 'Install Dependencies'
-    
-    - script: npm run build
-      displayName: 'Build Application'
-    
-    - script: |
-        if [ -f "web.config" ]; then cp web.config dist/; fi
-        if [ -f "staticwebapp.config.json" ]; then cp staticwebapp.config.json dist/; fi
-        if [ -d "api" ]; then cp -r api dist/; fi
-        echo "Build completed successfully"
-        ls -la dist/
-      displayName: 'Copy Configuration Files'
-    
-    - task: ArchiveFiles@2
-      displayName: 'Archive Build Artifacts'
-      inputs:
-        rootFolderOrFile: 'dist'
-        includeRootFolder: false
-        archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/oneview-react-$(Build.BuildId).zip'
-        replaceExistingArchive: true
-    
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Build Artifacts'
-      inputs:
-        pathToPublish: '$(Build.ArtifactStagingDirectory)'
-        artifactName: 'oneview-react-build'
-
-- stage: Deploy
-  displayName: 'Deploy to Azure'
-  dependsOn: Build
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-  jobs:
-  - deployment: DeployJob
-    displayName: 'Deploy OneView React'
-    pool:
-      vmImage: 'ubuntu-latest'
-    environment: 'production'
-    
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: DownloadBuildArtifacts@0
-            displayName: 'Download Build Artifacts'
-            inputs:
-              artifactName: 'oneview-react-build'
-              downloadPath: '$(System.ArtifactsDirectory)'
-          
-          - task: ExtractFiles@1
-            displayName: 'Extract Build Artifacts'
-            inputs:
-              archiveFilePatterns: '$(System.ArtifactsDirectory)/oneview-react-build/*.zip'
-              destinationFolder: '$(System.ArtifactsDirectory)/extracted'
-              cleanDestinationFolder: true
-          
-          - task: AzureStaticWebApp@0
-            displayName: 'Deploy to Azure Static Web Apps'
-            inputs:
-              azure_static_web_apps_api_token: '$(AZURE_STATIC_WEB_APPS_API_TOKEN)'
-              repo_token: '$(System.AccessToken)'
-              action: 'upload'
-              app_location: '$(System.ArtifactsDirectory)/extracted'
-              api_location: '$(System.ArtifactsDirectory)/extracted/api'
-              output_location: ''
-              skip_app_build: true
-              skip_api_build: true
+jobs:
+- job: BuildAndDeploy
+  displayName: 'Build and Deploy OneView React'
+  steps:
+  - task: NodeTool@0
+    displayName: 'Setup Node.js $(nodeVersion)'
+    inputs:
+      versionSpec: '$(nodeVersion)'
+  
+  - script: |
+      echo "Node.js version: $(node --version)"
+      echo "NPM version: $(npm --version)"
+    displayName: 'Display Environment Info'
+  
+  - script: npm ci
+    displayName: 'Install Dependencies'
+  
+  - script: npm run build
+    displayName: 'Build Application'
+  
+  - script: |
+      if [ -f "web.config" ]; then cp web.config dist/; fi
+      if [ -f "staticwebapp.config.json" ]; then cp staticwebapp.config.json dist/; fi
+      if [ -d "api" ]; then cp -r api dist/; fi
+      echo "Build completed successfully"
+      ls -la dist/
+    displayName: 'Copy Configuration Files'
+  
+  - task: ArchiveFiles@2
+    displayName: 'Archive Build Artifacts'
+    inputs:
+      rootFolderOrFile: 'dist'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/oneview-react-$(Build.BuildId).zip'
+      replaceExistingArchive: true
+  
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Build Artifacts'
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)'
+      artifactName: 'oneview-react-build'
