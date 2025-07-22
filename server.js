@@ -28,7 +28,22 @@ if (fs.existsSync(distPath) && fs.existsSync(indexPath)) {
 const USE_MOCK_DATA = process.env.USE_MOCK_DATA !== 'false';
 
 console.log('🔧 OneView Server Starting...');
-console.log('Mode:', USE_MOCK_DATA ? 'MOCK' : 'PRODUCTION');
+console.log('Node Version:', process.version);
+console.log('Environment:', process.env.NODE_ENV || 'development');
+console.log('Port:', port);
+console.log('Mode:', USE_MOCK_DATA ? 'MOCK DATA' : 'PRODUCTION DATA');
+
+// Check critical environment variables
+if (!USE_MOCK_DATA) {
+  const requiredEnvVars = ['SQL_SERVER', 'SQL_DATABASE', 'SQL_USERNAME', 'SQL_PASSWORD'];
+  const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+  
+  if (missingVars.length > 0) {
+    console.log('⚠️ Missing environment variables for production mode:', missingVars);
+    console.log('🔄 Falling back to mock data mode...');
+    // Don't crash, just use mock data
+  }
+}
 
 // Mock data
 const mockInitiatives = [
@@ -52,7 +67,17 @@ app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'ok', 
     timestamp: new Date().toISOString(),
-    mode: USE_MOCK_DATA ? 'mock' : 'production'
+    mode: USE_MOCK_DATA ? 'mock' : 'production',
+    node_version: process.version,
+    port: port,
+    environment: process.env.NODE_ENV || 'development',
+    dist_exists: fs.existsSync(distPath),
+    index_exists: fs.existsSync(indexPath),
+    has_env_vars: {
+      USE_MOCK_DATA: !!process.env.USE_MOCK_DATA,
+      SQL_SERVER: !!process.env.SQL_SERVER,
+      PORT: !!process.env.PORT
+    }
   });
 });
 
