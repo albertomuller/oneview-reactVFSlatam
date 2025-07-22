@@ -1,0 +1,92 @@
+[
+  {
+    "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+    "value": "YOUR_APPLICATION_INSIGHTS_CONNECTION_STRING_HERE",
+    "slotSetting": false
+  },
+  {
+    "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
+    "value": "~3",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_DEVOPS_ORG",
+    "value": "VolvoGroup-MASDCL",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_DEVOPS_PROJECT",
+    "value": "VFSDITSA-1018751-COE LATAM",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_DEVOPS_TOKEN",
+    "value": "YOUR_AZURE_DEVOPS_TOKEN_HERE",
+    "slotSetting": false
+  },
+  {
+    "name": "DB_CLIENT_ID",
+    "value": "YOUR_DB_CLIENT_ID_HERE",
+    "slotSetting": false
+  },
+  {
+    "name": "DB_TENANT_ID",
+    "value": "f25a93ae-1c98-41d7-8a33-0be75f5fe603",
+    "slotSetting": false
+  },
+  {
+    "name": "NODE_ENV",
+    "value": "production",
+    "slotSetting": false
+  },
+  {
+    "name": "PORT",
+    "value": "8080",
+    "slotSetting": false
+  },
+  {
+    "name": "SQL_DATABASE",
+    "value": "oneviewvfslatam",
+    "slotSetting": false
+  },
+  {
+    "name": "SQL_PASSWORD",
+    "value": "YOUR_SQL_PASSWORD_HERE",
+    "slotSetting": false
+  },
+  {
+    "name": "SQL_SERVER",
+    "value": "sqlsrv-datastaging-prd.database.windows.net",
+    "slotSetting": false
+  },
+  {
+    "name": "SQL_USERNAME",
+    "value": "YOUR_SQL_USERNAME_HERE",
+    "slotSetting": false
+  },
+  {
+    "name": "USE_MOCK_DATA",
+    "value": "false",
+    "slotSetting": false
+  },
+  {
+    "name": "XDT_MicrosoftApplicationInsights_Mode",
+    "value": "default",
+    "slotSetting": false
+  },
+  {
+    "name": "WEBSITE_NODE_DEFAULT_VERSION",
+    "value": "20.19.1",
+    "slotSetting": false
+  },
+  {
+    "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
+    "value": "false",
+    "slotSetting": false
+  },
+  {
+    "name": "WEBSITE_NPM_DEFAULT_VERSION",
+    "value": "10.9.2",
+    "slotSetting": false
+  }
+]
