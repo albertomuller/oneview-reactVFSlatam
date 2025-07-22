@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import PortfolioCard from '../components/Portfolio/PortfolioCard';
 import FilterPanel from '../components/Portfolio/FilterPanel';
 import VolvoIcon from '../components/Common/VolvoIcon';
-import VolvoIcon from '../components/Common/VolvoIcon';
 
 // Simplified Directors View - for direct links
 const DirectorsView = () => {
