@@ -1,0 +1,2 @@
+# Startup Command for Azure App Service
+cd api && node server-production.js

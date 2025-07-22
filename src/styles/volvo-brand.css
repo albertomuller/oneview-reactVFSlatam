@@ -1,0 +1,385 @@
+/* Volvo Brand Design System */
+/* Based on official Volvo brand guidelines */
+
+@import url('https://fonts.googleapis.com/css2?family=Volvo+Sans:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Volvo Brand Colors - Main Colors */
+  --volvo-dark-blue: #1E2832;      /* Primary dark blue */
+  --volvo-blue: #003F7F;           /* Main Volvo blue */
+  --volvo-navy: #2D3E50;           /* Navy variant */
+  --volvo-gray-dark: #4A5568;      /* Dark gray */
+  --volvo-gray: #718096;           /* Medium gray */
+  --volvo-gray-light: #A0AEC0;     /* Light gray */
+  --volvo-gray-lighter: #E2E8F0;   /* Very light gray */
+  --volvo-white: #FFFFFF;          /* Pure white */
+  --volvo-off-white: #F7FAFC;      /* Off white */
+
+  /* Accent Colors */
+  --volvo-green: #38A169;          /* Success green */
+  --volvo-green-light: #9AE6B4;    /* Light green */
+  --volvo-yellow: #D69E2E;         /* Warning yellow */
+  --volvo-teal: #2D7D8A;           /* Teal accent */
+  --volvo-teal-light: #81E6D9;     /* Light teal */
+
+  /* Status Colors */
+  --volvo-success: #38A169;
+  --volvo-warning: #D69E2E;
+  --volvo-error: #E53E3E;
+  --volvo-info: #3182CE;
+
+  /* Semantic Color Mapping */
+  --primary: var(--volvo-blue);
+  --primary-dark: var(--volvo-dark-blue);
+  --primary-light: var(--volvo-teal);
+  --primary-lighter: var(--volvo-teal-light);
+  --secondary: var(--volvo-gray);
+  --background: var(--volvo-off-white);
+  --surface: var(--volvo-white);
+  --surface-alt: #F8FAFC;
+  --border: var(--volvo-gray-lighter);
+  --text-primary: var(--volvo-dark-blue);
+  --text-secondary: var(--volvo-gray-dark);
+  --text-muted: var(--volvo-gray);
+  --success: var(--volvo-success);
+  --warning: var(--volvo-warning);
+  --error: var(--volvo-error);
+
+  /* Typography */
+  --font-family-primary: 'Volvo Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-family-secondary: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
+
+  /* Font Weights */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  /* Font Sizes */
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.125rem;   /* 18px */
+  --text-xl: 1.25rem;    /* 20px */
+  --text-2xl: 1.5rem;    /* 24px */
+  --text-3xl: 1.875rem;  /* 30px */
+  --text-4xl: 2.25rem;   /* 36px */
+  --text-5xl: 3rem;      /* 48px */
+
+  /* Spacing */
+  --space-1: 0.25rem;    /* 4px */
+  --space-2: 0.5rem;     /* 8px */
+  --space-3: 0.75rem;    /* 12px */
+  --space-4: 1rem;       /* 16px */
+  --space-5: 1.25rem;    /* 20px */
+  --space-6: 1.5rem;     /* 24px */
+  --space-8: 2rem;       /* 32px */
+  --space-10: 2.5rem;    /* 40px */
+  --space-12: 3rem;      /* 48px */
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(30, 40, 50, 0.05);
+  --shadow: 0 1px 3px 0 rgba(30, 40, 50, 0.1), 0 1px 2px 0 rgba(30, 40, 50, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(30, 40, 50, 0.1), 0 2px 4px -1px rgba(30, 40, 50, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(30, 40, 50, 0.1), 0 4px 6px -2px rgba(30, 40, 50, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(30, 40, 50, 0.1), 0 10px 10px -5px rgba(30, 40, 50, 0.04);
+
+  /* Border Radius */
+  --radius-sm: 0.125rem;   /* 2px */
+  --radius: 0.25rem;       /* 4px */
+  --radius-md: 0.375rem;   /* 6px */
+  --radius-lg: 0.5rem;     /* 8px */
+  --radius-xl: 0.75rem;    /* 12px */
+  --radius-2xl: 1rem;      /* 16px */
+  --radius-full: 9999px;   /* Full rounded */
+
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition: 200ms ease-in-out;
+  --transition-slow: 300ms ease-in-out;
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-family-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-normal);
+  color: var(--text-primary);
+  background-color: var(--background);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-size: var(--text-base);
+}
+
+/* Typography Classes */
+.volvo-heading {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+.volvo-subheading {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.volvo-body {
+  font-family: var(--font-family-secondary);
+  font-weight: var(--font-weight-normal);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.volvo-caption {
+  font-family: var(--font-family-secondary);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+/* Button Styles */
+.volvo-btn {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-semibold);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-lg);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.volvo-btn-primary {
+  background: linear-gradient(135deg, var(--volvo-blue) 0%, var(--volvo-dark-blue) 100%);
+  color: var(--volvo-white);
+  box-shadow: var(--shadow-md);
+}
+
+.volvo-btn-primary:hover {
+  background: linear-gradient(135deg, var(--volvo-dark-blue) 0%, var(--volvo-navy) 100%);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.volvo-btn-secondary {
+  background-color: var(--volvo-white);
+  color: var(--volvo-blue);
+  border: 2px solid var(--volvo-gray-lighter);
+  box-shadow: var(--shadow-sm);
+}
+
+.volvo-btn-secondary:hover {
+  background-color: var(--surface-alt);
+  border-color: var(--volvo-blue);
+  box-shadow: var(--shadow);
+}
+
+.volvo-btn-success {
+  background: linear-gradient(135deg, var(--volvo-green) 0%, #2F855A 100%);
+  color: var(--volvo-white);
+}
+
+.volvo-btn-warning {
+  background: linear-gradient(135deg, var(--volvo-yellow) 0%, #B7791F 100%);
+  color: var(--volvo-white);
+}
+
+/* Card Styles */
+.volvo-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow);
+  transition: all var(--transition);
+}
+
+.volvo-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+/* Input Styles */
+.volvo-input {
+  font-family: var(--font-family-secondary);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface);
+  color: var(--text-primary);
+  font-size: var(--text-base);
+  transition: all var(--transition);
+}
+
+.volvo-input:focus {
+  outline: none;
+  border-color: var(--volvo-blue);
+  box-shadow: 0 0 0 3px rgba(0, 63, 127, 0.1);
+  background-color: var(--volvo-white);
+}
+
+/* Status Badge Styles */
+.volvo-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-family-secondary);
+}
+
+.volvo-badge-success {
+  background-color: var(--volvo-green-light);
+  color: #22543D;
+}
+
+.volvo-badge-warning {
+  background-color: #FAF089;
+  color: #744210;
+}
+
+.volvo-badge-error {
+  background-color: #FED7D7;
+  color: #742A2A;
+}
+
+.volvo-badge-info {
+  background-color: var(--volvo-teal-light);
+  color: #1A365D;
+}
+
+/* Layout Utilities */
+.volvo-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+.volvo-section {
+  padding: var(--space-8) 0;
+}
+
+.volvo-grid {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.volvo-flex {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+/* Header Styles */
+.volvo-header {
+  background: linear-gradient(135deg, var(--volvo-white) 0%, var(--surface-alt) 100%);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Brand Logo */
+.volvo-logo {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--text-xl);
+  color: var(--volvo-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Animation Enhancements */
+.volvo-fade-in {
+  animation: volvoFadeIn 0.6s ease-out forwards;
+}
+
+.volvo-slide-up {
+  animation: volvoSlideUp 0.8s ease-out forwards;
+}
+
+@keyframes volvoFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes volvoSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .volvo-container {
+    padding: 0 var(--space-3);
+  }
+  
+  .volvo-section {
+    padding: var(--space-6) 0;
+  }
+  
+  .volvo-btn {
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--text-sm);
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0F1419;
+    --surface: #1A202C;
+    --surface-alt: #2D3748;
+    --text-primary: var(--volvo-white);
+    --text-secondary: var(--volvo-gray-light);
+    --text-muted: var(--volvo-gray);
+    --border: #4A5568;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .volvo-btn,
+  .volvo-input,
+  [class*="hover:"] {
+    box-shadow: none !important;
+    transform: none !important;
+  }
+}

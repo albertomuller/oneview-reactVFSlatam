@@ -1,0 +1,114 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "webAppName": {
+      "type": "string",
+      "defaultValue": "Oneview-VFSLATAM",
+      "metadata": {
+        "description": "Name of the web app"
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "Canada Central",
+      "metadata": {
+        "description": "Location for all resources"
+      }
+    },
+    "sku": {
+      "type": "string",
+      "defaultValue": "B1",
+      "allowedValues": ["F1", "B1", "B2", "S1", "S2", "P1", "P2"],
+      "metadata": {
+        "description": "The pricing tier for the hosting plan"
+      }
+    },
+    "azureDevOpsToken": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Azure DevOps Personal Access Token"
+      }
+    }
+  },
+  "variables": {
+    "appServicePlanName": "[concat(parameters('webAppName'), '-plan')]",
+    "sqlServerName": "sqlsrv-datastaging-prd",
+    "sqlDatabaseName": "oneviewvfslatam"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2021-02-01",
+      "name": "[variables('appServicePlanName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[parameters('sku')]"
+      },
+      "kind": "linux",
+      "properties": {
+        "reserved": true
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2021-02-01",
+      "name": "[parameters('webAppName')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+      ],
+      "kind": "app,linux",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+        "siteConfig": {
+          "linuxFxVersion": "NODE|20-lts",
+          "appCommandLine": "npm start",
+          "appSettings": [
+            {
+              "name": "NODE_VERSION",
+              "value": "20.x"
+            },
+            {
+              "name": "WEBSITE_NODE_DEFAULT_VERSION",
+              "value": "~20"
+            },
+            {
+              "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
+              "value": "true"
+            },
+            {
+              "name": "USE_MOCK_DATA",
+              "value": "false"
+            },
+            {
+              "name": "AZURE_DEVOPS_ORG",
+              "value": "VolvoGroup-MASDCL"
+            },
+            {
+              "name": "AZURE_DEVOPS_PROJECT",
+              "value": "VFSDITSA-1018751-COE LATAM"
+            },
+            {
+              "name": "AZURE_DEVOPS_TOKEN",
+              "value": "[parameters('azureDevOpsToken')]"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "webAppUrl": {
+      "type": "string",
+      "value": "[concat('https://', reference(resourceId('Microsoft.Web/sites', parameters('webAppName'))).defaultHostName)]"
+    },
+    "principalId": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Web/sites', parameters('webAppName')), '2021-02-01', 'full').identity.principalId]"
+    }
+  }
+}
