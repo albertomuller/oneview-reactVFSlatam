@@ -16,7 +16,7 @@ The app might not be starting correctly
 The deployment might not have the correct files
 
 ### **4. Port Configuration**
-The app might be listening on the wrong port
+The app might be listening on the wrong portßß
 
 ## 🔧 **IMMEDIATE DIAGNOSIS STEPS:**
 
