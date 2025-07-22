@@ -3,24 +3,29 @@ const sql = require('mssql');
 let pool = null;
 
 const config = {
-    server: 'sqlsrv-datastaging-prd.database.windows.net',
-    database: 'oneviewvfslatam',
-    authentication: {
-        type: 'azure-active-directory-default'
-    },
+    server: process.env.SQL_SERVER || 'your-azure-sql-server.database.windows.net',
+    port: 1433,
+    database: process.env.SQL_DATABASE || 'your-database-name',
+    user: process.env.SQL_USERNAME || 'your-username',
+    password: process.env.SQL_PASSWORD || 'your-password',
     options: {
         encrypt: true,
         trustServerCertificate: false,
         enableArithAbort: true,
         connectionTimeout: 30000,
         requestTimeout: 30000
+    },
+    pool: {
+        max: 10,
+        min: 0,
+        idleTimeoutMillis: 30000
     }
 };
 
 async function getConnection() {
-    // Para desenvolvimento local, usar mock data
-    if (process.env.NODE_ENV !== 'production' && !process.env.FORCE_SQL_CONNECTION) {
-        console.log('🔧 Development mode: Using mock data instead of SQL');
+    // Check if we should use mock data
+    if (process.env.USE_MOCK_DATA === 'true') {
+        console.log('🔧 Using mock data as configured');
         return null;
     }
     
@@ -55,8 +60,28 @@ async function closeConnection() {
     }
 }
 
+async function testConnection() {
+    try {
+        console.log('🔗 Attempting to connect to database...');
+        const connection = await getConnection();
+        
+        if (!connection) {
+            throw new Error('No connection returned (using mock data)');
+        }
+        
+        // Test with a simple query
+        const result = await connection.request().query('SELECT 1 as test');
+        console.log('✅ Database test query successful:', result.recordset);
+        return true;
+    } catch (error) {
+        console.error('❌ Database test failed:', error.message);
+        throw error;
+    }
+}
+
 module.exports = {
     getConnection,
     closeConnection,
+    testConnection,
     sql
 };

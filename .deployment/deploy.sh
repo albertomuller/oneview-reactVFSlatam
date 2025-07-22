@@ -3,6 +3,9 @@
 # Azure App Service deployment script for OneView React
 echo "Starting OneView deployment..."
 
+# Set error handling
+set -e
+
 # Set Node.js version
 echo "Setting Node.js version..."
 export NODE_VERSION=20
@@ -11,37 +14,36 @@ export NODE_VERSION=20
 echo "Installing frontend dependencies..."
 npm install
 
+# Build the React application with Vite
+echo "Building React application with Vite..."
+npx vite build
+
+# Verify dist folder was created
+if [ ! -d "dist" ]; then
+    echo "Error: dist folder was not created during build"
+    exit 1
+fi
+
+if [ ! -f "dist/index.html" ]; then
+    echo "Error: dist/index.html was not created during build"
+    exit 1
+fi
+
+echo "Frontend build successful - dist/index.html created"
+
 # Install dependencies for API
 echo "Installing API dependencies..."
 cd api
 npm install
 cd ..
 
-# Build the React application
-echo "Building React application..."
-npm run build
-
-# Copy built files to wwwroot if needed
-if [ -d "dist" ]; then
-    echo "Copying built files..."
-    cp -r dist/* .
-fi
-
-# Set up API for production
-echo "Setting up API for production..."
-cd api
-echo "API dependencies installed"
-cd ..
-
 echo "Deployment completed successfully!"
+echo "Server entry point: server.js"
+echo "Static files location: dist/"
 
-# Create startup script
-cat > startup.sh << 'EOF'
-#!/bin/bash
-cd /home/site/wwwroot/api
-node server-production.js
-EOF
-
-chmod +x startup.sh
+# Verify server file exists
+if [ ! -f "server.js" ]; then
+    echo "Warning: server.js not found in root directory"
+fi
 
 echo "OneView React deployment completed!"

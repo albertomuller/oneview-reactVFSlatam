@@ -12,7 +12,7 @@ variables:
 
 stages:
 - stage: Build
-  jobs:
+  jobs:s
   - job: Build
     steps:
     # Setup Node.js
