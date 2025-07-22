@@ -1,14 +1,14 @@
 {
   "name": "oneview-react-azure",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "npm run ensure:built && node server.js",
     "build": "npm run build:frontend && npm run install:api",
     "build:frontend": "vite build",
-    "build:fast": "npm run build:frontend && npm run install:api",
-    "install:api": "cd api && npm install --production --no-audit --no-fund",
-    "postinstall": "npm run build:fast"
+    "install:api": "cd api && npm install --omit=dev --no-audit --no-fund",
+    "ensure:built": "npm run build:frontend && npm run install:api",
+    "azure:start": "node server.js"
   },
   "engines": {
     "node": "20.x",

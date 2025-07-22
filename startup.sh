@@ -2,34 +2,38 @@
 
 # Azure App Service startup script for Node.js + React (Vite) app
 echo "Starting Azure deployment..."
+echo "Node version: $(node --version)"
+echo "NPM version: $(npm --version)"
+echo "Working directory: $(pwd)"
 
-# Set npm cache directory
+# Set npm cache directory and optimize settings
 export npm_config_cache=/tmp/.npm
+export npm_config_prefer_offline=true
+export npm_config_audit=false
+export npm_config_fund=false
 
-# Install production dependencies with fallback
-echo "Installing dependencies..."
-if npm ci --omit=dev --no-audit --no-fund --prefer-offline 2>/dev/null; then
-    echo "✅ npm ci succeeded"
+# Build the React frontend if not exists
+if [ ! -d "dist" ] || [ ! -f "dist/index.html" ]; then
+    echo "Building React frontend..."
+    npm run build:frontend || {
+        echo "Frontend build failed, trying again..."
+        npm run build:frontend
+    }
 else
-    echo "⚠️ npm ci failed, falling back to npm install"
-    npm install --omit=dev --no-audit --no-fund --prefer-offline
+    echo "Frontend already built, skipping build"
 fi
 
-# Build the React frontend
-echo "Building React frontend..."
-npm run build:frontend
-
-# Install API dependencies with fallback
-echo "Installing API dependencies..."
+# Install/check API dependencies
+echo "Checking API dependencies..."
 cd api
-if npm ci --omit=dev --no-audit --no-fund --prefer-offline 2>/dev/null; then
-    echo "✅ API npm ci succeeded"
-else
-    echo "⚠️ API npm ci failed, falling back to npm install"
+if [ ! -d "node_modules" ] || [ ! -f "node_modules/.package-lock.json" ]; then
+    echo "Installing API dependencies..."
     npm install --omit=dev --no-audit --no-fund --prefer-offline
+else
+    echo "API dependencies already installed"
 fi
 cd ..
 
 # Start the server
-echo "Starting server..."
+echo "Starting Node.js server on port ${PORT:-8080}..."
 exec node server.js
