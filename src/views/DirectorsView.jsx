@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PortfolioCard from '../components/Portfolio/PortfolioCard';
 import FilterPanel from '../components/Portfolio/FilterPanel';
+import VolvoIcon from '../components/Common/VolvoIcon';
+import VolvoIcon from '../components/Common/VolvoIcon';
 
 // Simplified Directors View - for direct links
 const DirectorsView = () => {
@@ -100,39 +102,44 @@ const DirectorsView = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading Executive Dashboard...</p>
+        <div className="text-center volvo-fade-in">
+          <div className="w-16 h-16 mx-auto mb-6">
+            <VolvoIcon name="spinner" size={64} color="var(--volvo-blue)" />
+          </div>
+          <h2 className="volvo-heading text-2xl mb-2 text-primary">Loading Executive Dashboard</h2>
+          <p className="volvo-body text-muted">Preparing your strategic portfolio overview...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Simplified Header for Directors */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <i className="fas fa-chart-line text-white text-lg"></i>
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
+      {/* Enhanced Header for Directors with Volvo Branding */}
+      <header className="volvo-header">
+        <div className="volvo-container">
+          <div className="flex items-center justify-between h-20 volvo-fade-in">
+            <div className="volvo-flex">
+              <div className="w-14 h-14 rounded-xl flex items-center justify-center"
+                   style={{ background: 'linear-gradient(135deg, var(--volvo-blue) 0%, var(--volvo-dark-blue) 100%)' }}>
+                <VolvoIcon name="chart-line" size={24} color="var(--volvo-white)" />
               </div>
-              <div>
-                <h1 className="text-xl font-bold text-gray-900">Volvo OneView</h1>
-                <p className="text-sm text-gray-500">Executive Portfolio Dashboard</p>
+              <div className="ml-4">
+                <h1 className="volvo-logo text-2xl">VOLVO</h1>
+                <h2 className="volvo-heading text-xl text-primary">OneView</h2>
+                <p className="volvo-caption text-muted">Executive Portfolio Dashboard</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-500">
-                <i className="fas fa-user-tie mr-1"></i>
-                Executive View
-              </span>
+            <div className="volvo-flex">
+              <div className="volvo-badge volvo-badge-info">
+                <VolvoIcon name="user-tie" size={14} className="mr-2" />
+                Executive Access
+              </div>
               <a 
                 href="/"
-                className="text-sm text-primary hover:text-primary-dark"
+                className="volvo-btn volvo-btn-secondary ml-4"
               >
-                <i className="fas fa-cog mr-1"></i>
+                <VolvoIcon name="settings" size={16} className="mr-2" />
                 Admin Panel
               </a>
             </div>
@@ -141,34 +148,47 @@ const DirectorsView = () => {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <FilterPanel
-          filters={filters}
-          filterOptions={filterOptions}
-          onFilterChange={handleFilterChange}
-          onClearFilters={handleClearFilters}
-          initiatives={filteredInitiatives}
-          onExportPDF={handleExportPDF}
-          onRefresh={handleRefresh}
-        />
+      <main className="volvo-container volvo-section">
+        <div className="volvo-slide-up">
+          <FilterPanel
+            filters={filters}
+            filterOptions={filterOptions}
+            onFilterChange={handleFilterChange}
+            onClearFilters={handleClearFilters}
+            initiatives={filteredInitiatives}
+            onExportPDF={handleExportPDF}
+            onRefresh={handleRefresh}
+          />
+        </div>
 
-        <div id="directors-portfolio-content">
+        <div id="directors-portfolio-content" className="mt-8">
           {filteredInitiatives.length === 0 ? (
-            <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
-              <i className="fas fa-search text-4xl text-gray-300 mb-4"></i>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No Initiatives Found</h3>
-              <p className="text-gray-500 mb-6">Adjust filters to view different initiatives</p>
+            <div className="executive-card text-center py-16 volvo-fade-in">
+              <div className="mb-6">
+                <VolvoIcon name="search" size={48} color="var(--volvo-gray)" />
+              </div>
+              <h3 className="volvo-heading text-xl mb-3 text-primary">No Initiatives Found</h3>
+              <p className="volvo-body text-muted mb-8 max-w-md mx-auto">
+                Adjust your filters to view strategic initiatives, or contact your administrator if you expect to see data here.
+              </p>
               <button
                 onClick={handleClearFilters}
-                className="bg-primary hover:bg-primary-dark text-white py-2 px-4 rounded transition-colors duration-200"
+                className="volvo-btn volvo-btn-primary"
               >
-                <i className="fas fa-times mr-2"></i>Clear Filters
+                <VolvoIcon name="filter" size={16} className="mr-2" />
+                Clear All Filters
               </button>
             </div>
           ) : (
-            <div className="space-y-6">
-              {filteredInitiatives.map(initiative => (
-                <PortfolioCard key={initiative.id} initiative={initiative} />
+            <div className="space-y-6 volvo-slide-up">
+              {filteredInitiatives.map((initiative, index) => (
+                <div 
+                  key={initiative.id} 
+                  className="volvo-fade-in"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <PortfolioCard initiative={initiative} />
+                </div>
               ))}
             </div>
           )}

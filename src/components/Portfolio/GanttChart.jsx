@@ -1,5 +1,6 @@
 import React from 'react';
 import { format, parseISO, differenceInDays, startOfMonth, endOfMonth, addMonths } from 'date-fns';
+import VolvoIcon from '../Common/VolvoIcon';
 
 const GanttChart = ({ initiative, hierarchyData = [] }) => {
   // Work item type styles from the original
@@ -226,7 +227,7 @@ const GanttChart = ({ initiative, hierarchyData = [] }) => {
     <div className="gantt-chart bg-white border border-gray-200 rounded-lg overflow-hidden">
       <div className="gantt-header p-4 bg-gray-50 border-b">
         <h4 className="font-semibold text-gray-800 text-base mb-2 flex items-center gap-2">
-          <i className="fas fa-chart-gantt text-primary"></i>
+          <VolvoIcon name="chart-gantt" size={20} color="var(--volvo-blue)" className="mr-2" />
           PROJECT TIMELINE
         </h4>
         <p className="text-sm text-gray-600">
@@ -300,11 +301,11 @@ const GanttChart = ({ initiative, hierarchyData = [] }) => {
                   >
                     <div className="h-full flex items-center justify-between px-2 text-white text-xs font-medium relative overflow-hidden">
                       <span className="truncate">{item.progress}%</span>
-                      <i className="fas fa-external-link-alt opacity-70" style={{ fontSize: '0.6rem' }}></i>
+                      <VolvoIcon name="external-link" size={10} color="var(--volvo-gray)" />
                       
                       {/* Progress fill */}
                       <div
-                        className="absolute inset-0 bg-black bg-opacity-20 rounded"
+                        className="absolute inset-0 bg-volvo-gray-lighter bg-opacity-40 rounded"
                         style={{ width: `${item.progress}%` }}
                       ></div>
                     </div>

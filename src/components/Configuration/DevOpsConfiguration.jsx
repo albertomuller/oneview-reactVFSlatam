@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import VolvoIcon from '../Common/VolvoIcon';
 
 const DevOpsConfiguration = ({ onSave, onTest, connectionStatus, loading }) => {
   const [config, setConfig] = useState({
@@ -54,11 +55,13 @@ const DevOpsConfiguration = ({ onSave, onTest, connectionStatus, loading }) => {
   const getStatusIcon = () => {
     switch (connectionStatus) {
       case 'success':
-        return <i className="fas fa-check-circle text-green-600"></i>;
+        return <VolvoIcon name="check-circle" size={16} color="var(--volvo-green)" />;
       case 'error':
-        return <i className="fas fa-times-circle text-red-600"></i>;
+        return <VolvoIcon name="alert-triangle" size={16} color="var(--error)" />;
+      case 'testing':
+        return <VolvoIcon name="spinner" size={16} color="var(--volvo-blue)" />;
       default:
-        return <i className="fas fa-clock text-gray-600"></i>;
+        return <VolvoIcon name="clock" size={16} color="var(--volvo-gray)" />;
     }
   };
 
@@ -87,34 +90,53 @@ const DevOpsConfiguration = ({ onSave, onTest, connectionStatus, loading }) => {
   return (
     <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
       {/* Enhanced Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-5">
+      <div style={{ background: 'linear-gradient(135deg, var(--volvo-blue) 0%, var(--volvo-dark-blue) 100%)' }}
+           className="px-6 py-5">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <div className="bg-white/10 rounded-lg p-2 mr-4">
-              <i className="fab fa-microsoft text-white text-2xl"></i>
+            <div className="rounded-lg p-2 mr-4"
+                 style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
+              <VolvoIcon name="microsoft" size={24} color="var(--volvo-white)" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-white">Azure DevOps Configuration</h3>
-              <p className="text-blue-100 text-sm mt-1">Configure your DevOps connection and work item queries</p>
+              <h3 className="volvo-heading text-xl text-white">Azure DevOps Configuration</h3>
+              <p className="volvo-body text-sm mt-1" style={{ color: 'var(--volvo-teal-light)' }}>
+                Configure your DevOps connection and work item queries
+              </p>
             </div>
           </div>
           <div className="flex items-center space-x-3">
             {connectionStatus === 'success' && (
-              <div className="flex items-center text-green-100 bg-green-500/20 px-3 py-2 rounded-full border border-green-400/20">
-                <i className="fas fa-check-circle mr-2"></i>
-                <span className="text-sm font-semibold">Connected</span>
+              <div className="flex items-center px-3 py-2 rounded-full"
+                   style={{ 
+                     color: 'var(--volvo-green-light)', 
+                     backgroundColor: 'rgba(56, 161, 105, 0.2)',
+                     border: '1px solid rgba(56, 161, 105, 0.2)'
+                   }}>
+                <VolvoIcon name="check-circle" size={16} className="mr-2" />
+                <span className="volvo-body text-sm font-semibold">Connected</span>
               </div>
             )}
             {connectionStatus === 'error' && (
-              <div className="flex items-center text-red-100 bg-red-500/20 px-3 py-2 rounded-full border border-red-400/20">
-                <i className="fas fa-times-circle mr-2"></i>
-                <span className="text-sm font-semibold">Error</span>
+              <div className="flex items-center px-3 py-2 rounded-full"
+                   style={{ 
+                     color: '#FED7D7', 
+                     backgroundColor: 'rgba(229, 62, 62, 0.2)',
+                     border: '1px solid rgba(229, 62, 62, 0.2)'
+                   }}>
+                <VolvoIcon name="alert-triangle" size={16} className="mr-2" />
+                <span className="volvo-body text-sm font-semibold">Error</span>
               </div>
             )}
             {connectionStatus === 'testing' && (
-              <div className="flex items-center text-blue-100 bg-blue-500/20 px-3 py-2 rounded-full border border-blue-400/20">
-                <i className="fas fa-spinner fa-spin mr-2"></i>
-                <span className="text-sm font-semibold">Testing...</span>
+              <div className="flex items-center px-3 py-2 rounded-full"
+                   style={{ 
+                     color: 'var(--volvo-teal-light)', 
+                     backgroundColor: 'rgba(49, 130, 206, 0.2)',
+                     border: '1px solid rgba(49, 130, 206, 0.2)'
+                   }}>
+                <VolvoIcon name="spinner" size={16} className="mr-2" />
+                <span className="volvo-body text-sm font-semibold">Testing...</span>
               </div>
             )}
           </div>
@@ -124,62 +146,68 @@ const DevOpsConfiguration = ({ onSave, onTest, connectionStatus, loading }) => {
       <div className="p-6">
         <div className="space-y-6">
           {/* Personal Access Token */}
-          <div className="space-y-2">
-            <label className="block text-sm font-bold text-gray-700 flex items-center">
-              <i className="fas fa-key text-primary mr-2"></i>
+          <div className="space-y-3">
+            <label className="block volvo-subheading text-sm flex items-center">
+              <VolvoIcon name="key" size={16} color="var(--volvo-blue)" className="mr-2" />
               Personal Access Token (PAT)
-              <span className="text-red-500 ml-1">*</span>
+              <span style={{ color: 'var(--error)' }} className="ml-1">*</span>
             </label>
             <div className="relative group">
               <input
                 type={showPat ? 'text' : 'password'}
                 value={config.pat}
                 onChange={(e) => handleChange('pat', e.target.value)}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 group-hover:border-gray-300 bg-gray-50/30"
+                className="volvo-input"
                 placeholder="Enter your Azure DevOps PAT"
               />
               <button
                 type="button"
                 onClick={() => setShowPat(!showPat)}
-                className="absolute inset-y-0 right-0 flex items-center px-4 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                className="absolute inset-y-0 right-0 flex items-center px-4 transition-colors duration-200"
+                style={{ color: 'var(--volvo-gray)' }}
               >
-                <i className={`fas ${showPat ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                <VolvoIcon name={showPat ? 'eye-off' : 'eye'} size={18} />
               </button>
             </div>
-            <div className="bg-blue-50 border-l-4 border-blue-400 p-3 rounded-r-lg">
-              <p className="text-xs text-blue-700 font-medium flex items-center">
-                <i className="fas fa-info-circle mr-1"></i>
+            <div className="rounded-lg p-3 border-l-4"
+                 style={{ 
+                   backgroundColor: 'var(--volvo-teal-light)', 
+                   borderColor: 'var(--volvo-teal)',
+                   color: '#1A365D'
+                 }}>
+              <p className="volvo-caption font-medium flex items-center">
+                <VolvoIcon name="info" size={14} className="mr-1" />
                 Required permissions: Work Items (Read), Analytics (Read)
               </p>
             </div>
           </div>
 
           {/* Organization */}
-          <div className="space-y-2">
-            <label className="block text-sm font-bold text-gray-700 flex items-center">
-              <i className="fas fa-building text-primary mr-2"></i>
+          <div className="space-y-3">
+            <label className="block volvo-subheading text-sm flex items-center">
+              <VolvoIcon name="building" size={16} color="var(--volvo-blue)" className="mr-2" />
               Organization
             </label>
             <input
               type="text"
               value={config.organization}
               onChange={(e) => handleChange('organization', e.target.value)}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 hover:border-gray-300 bg-gray-50/30"
+              className="volvo-input"
               placeholder="Your Azure DevOps organization"
             />
           </div>
 
           {/* Project */}
-          <div className="space-y-2">
-            <label className="block text-sm font-bold text-gray-700 flex items-center">
-              <i className="fas fa-project-diagram text-primary mr-2"></i>
+          <div className="space-y-3">
+            <label className="block volvo-subheading text-sm flex items-center">
+              <VolvoIcon name="project-diagram" size={16} color="var(--volvo-blue)" className="mr-2" />
               Project
             </label>
             <input
               type="text"
               value={config.project}
               onChange={(e) => handleChange('project', e.target.value)}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 hover:border-gray-300 bg-gray-50/30"
+              className="volvo-input"
               placeholder="Your Azure DevOps project"
             />
           </div>
