@@ -1,25 +1,6 @@
 /* Import Volvo Brand Design System */
 @import './styles/volvo-brand.css';
 
-/* Minimalist Design Variables - Aligned with index.html */
-:root {
-  --primary-dark: #2D606F;
-  --primary: #396976;
-  --primary-light: #678C96;
-  --primary-lighter: #96B0B6;
-  --secondary: #C3D2D6;
-  --background: #FAFBFB;
-  --surface: #FFFFFF;
-  --surface-alt: #F7F9F9;
-  --border: #E8EDEF;
-  --text-primary: #1A2B2F;
-  --text-secondary: #4A5E65;
-  --text-muted: #7A8B91;
-  --success: #10B981;
-  --warning: #F59E0B;
-  --error: #EF4444;
-}
-
 /* Base application styles */
 * {
   box-sizing: border-box;
@@ -29,7 +10,7 @@ html, body, #root {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-family-primary);
   background-color: var(--background);
   color: var(--text-primary);
 }

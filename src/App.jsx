@@ -7,6 +7,8 @@ import LoginPage from './components/Auth/LoginPage';
 import DevOpsConfiguration from './components/Configuration/DevOpsConfiguration';
 import { useAuth } from './hooks/useAuth';
 import { azureDevOpsService, fetchInitiatives } from './services/azureDevOps';
+import { useAzureDevOps } from './hooks/useAzureDevOps';
+import DevOpsTest from './components/DevOps/DevOpsTest';
 
 function App() {
   const { isAuthenticated, user, loading: authLoading, login, logout } = useAuth();
@@ -62,8 +64,8 @@ function App() {
         // Try to load from real Azure DevOps first
         try {
           showToast('Connecting to Azure DevOps...', 'info', 2000);
-          const workItems = await azureDevOpsService.fetchWorkItemsByQuery();
-          data = azureDevOpsService.transformWorkItemsToInitiatives(workItems);
+          const devopsData = await azureDevOpsService.fetchDevOpsData();
+          data = azureDevOpsService.transformWorkItemsToInitiatives(devopsData.items);
           showToast(`Successfully loaded ${data.length} work items from Azure DevOps`, 'success');
         } catch (devOpsError) {
           console.warn('Azure DevOps failed, falling back to API:', devOpsError);
@@ -318,6 +320,9 @@ function App() {
               </div>
             )}
           </div>
+
+          {/* DevOps Integration Testing */}
+          <DevOpsTest />
         </div>
       );
     }
@@ -331,8 +336,8 @@ function App() {
           // Try to load from real Azure DevOps first
           try {
             showToast('Loading from Azure DevOps...', 'info', 2000);
-            const workItems = await azureDevOpsService.fetchWorkItemsByQuery();
-            data = azureDevOpsService.transformWorkItemsToInitiatives(workItems);
+            const devopsData = await azureDevOpsService.fetchDevOpsData();
+            data = azureDevOpsService.transformWorkItemsToInitiatives(devopsData.items);
             showToast(`Successfully loaded ${data.length} work items from Azure DevOps`, 'success');
           } catch (devOpsError) {
             console.warn('Azure DevOps failed, falling back to API:', devOpsError);
