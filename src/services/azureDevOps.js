@@ -4,7 +4,7 @@ const AZURE_DEVOPS_CONFIG = {
   project: 'VFSDITSA-1018751-COE LATAM',
   apiVersion: '7.1-preview.2',
   baseUrl: 'https://dev.azure.com',
-  queryId: 'c0bf17f0-970c-4577-a40d-2dbd3bddc452', // Main query
+  queryId: '0bf17f0f-970c-4577-a40d-2dbd3bddc452', // Main query (updated)
   okrQueryId: 'ff0981c2-1a04-483b-8553-3b9b185a84b1' // OKR query
 };
 
@@ -45,19 +45,34 @@ class AzureDevOpsService {
     };
   }
 
-  // Fetch DevOps data using query (ONEVIEW pattern)
-  async fetchDevOpsData(queryId = this.queryId, expandRelations = false) {
+  // Fetch DevOps data using direct WIQL query (ONEVIEW pattern)
+  async fetchDevOpsData(customQuery = null, expandRelations = false) {
     try {
-      console.log(`Fetching DevOps data for query: ${queryId}`);
+      console.log(`Fetching DevOps data with ${customQuery ? 'custom' : 'default'} query`);
       
       const headers = this.getAuthHeaders();
-      const queryUrl = `${this.baseUrl}/${this.organization}/${this.project}/_apis/wit/wiql/${queryId}?api-version=${this.apiVersion}`;
+      
+      // Default WIQL query for portfolio initiatives
+      const defaultQuery = {
+        query: `SELECT [System.Id], [System.Title], [System.WorkItemType], [System.State], 
+                       [System.AssignedTo], [System.AreaPath], [System.IterationPath],
+                       [Microsoft.VSTS.Common.Priority], [Microsoft.VSTS.Scheduling.StartDate],
+                       [Microsoft.VSTS.Scheduling.TargetDate], [System.Description]
+                FROM workitems 
+                WHERE [System.TeamProject] = @project 
+                AND [System.WorkItemType] IN ('Initiative', 'Epic', 'Feature', 'User Story', 'Bug', 'Task')
+                ORDER BY [System.WorkItemType], [System.Id]`
+      };
 
-      console.log("Making request to:", queryUrl);
+      const queryPayload = customQuery || defaultQuery;
+      const wiqlUrl = `${this.baseUrl}/${this.organization}/${encodeURIComponent(this.project)}/_apis/wit/wiql?api-version=${this.apiVersion}`;
 
-      const response = await fetch(queryUrl, {
-        method: 'GET',
-        headers: headers
+      console.log("Making WIQL request to:", wiqlUrl);
+
+      const response = await fetch(wiqlUrl, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(queryPayload)
       });
 
       console.log("Response status:", response.status);
