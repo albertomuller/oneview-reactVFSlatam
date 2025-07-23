@@ -4,7 +4,7 @@ const AZURE_DEVOPS_CONFIG = {
   project: 'VFSDITSA-1018751-COE LATAM',
   apiVersion: '7.1-preview.2',
   baseUrl: 'https://dev.azure.com',
-  queryId: '0bf17f0f-970c-4577-a40d-2dbd3bddc452', // Main query (updated)
+  queryId: '0bf17f0f-970c-4577-a40d-2dbd3bddc452', // Main query (corrected)
   okrQueryId: 'ff0981c2-1a04-483b-8553-3b9b185a84b1' // OKR query
 };
 
