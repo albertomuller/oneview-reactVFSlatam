@@ -22,9 +22,29 @@ npm install --omit=dev --no-audit --no-fund && npm start
 - `azure-env-vars.template.json` - Template para futuras configurações
 - `azure-env-vars.json` - Valores reais (não versionado)
 
-### 🎯 **Test Deployment:**
-1. Configure o startup command no Azure
-2. Monitore logs via Azure Portal → Log stream
-3. Teste endpoints: `/health`, `/api/health`, `/api/initiatives`
+### 🎯 **Deployment Steps:**
+1. **Configure o startup command no Azure Portal:**
+   ```bash
+   npm install --omit=dev --no-audit --no-fund && npm start
+   ```
 
-**O app está pronto para produção!** 🚀
+2. **Monitore deployment via Azure Portal:**
+   - App Service → Log stream
+   - Application Insights → Live metrics
+
+3. **Validate endpoints:**
+   - `GET /health` - Health check
+   - `GET /api/health` - API health check  
+   - `GET /api/initiatives` - Main application endpoint
+
+### 📋 **Production Checklist:**
+- ✅ Environment variables configured
+- ✅ Database connection tested
+- ✅ Azure DevOps integration active
+- ✅ Application Insights monitoring enabled
+- ✅ Build process optimized for production
+- ✅ Security configurations applied
+
+### 🚀 **Version:** 1.0.4 - PRODUCTION READY
+
+**Status: Pronto para deploy em produção!** 🎯
